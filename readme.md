@@ -66,58 +66,7 @@ ec2-1 ansible_host=<EC2_PUBLIC_IP> ansible_user=ubuntu ansible_ssh_private_key_f
 
 
 4. Playbook: playbook.yml
-- name: Deploy static website with Ansible
-  hosts: webservers
-  become: yes
-  tasks:
-
-    - name: Install NGINX and unzip
-      apt:
-        name:
-          - nginx
-          - unzip
-        state: present
-        update_cache: yes
-
-    - name: Remove default html files on Nginx
-      file:
-        path: /var/www/html/
-        state: absent
-
-    - name: Recreate deployment directory
-      file:
-        path: /var/www/html/
-        state: directory
-        owner: www-data
-        group: www-data
-        mode: '0755'
-
-    - name: Download website zip
-      get_url:
-        url: https://example.com/organic-1.0.0.zip   # replace with your link
-        dest: /your_controlnode_path/organic-1.0.0.zip
-        mode: '0644'
-
-    - name: Unzip website files
-      unarchive:
-        src: /your_controlnode_path/organic-1.0.0.zip
-        dest: /your_controlnode_path/
-        remote_src: yes
-        extra_opts: ["-o"]
-
-    - name: Copy website files to nginx html folder
-      copy:
-        src: /your_controlnode_path/organic-1.0.0/
-        dest: /var/www/html/
-        owner: www-data
-        group: www-data
-        mode: '0755'
-
-    - name: Restart nginx
-      service:
-        name: nginx
-        state: restarted
-
+Check the playbook.yml file for the code
 
 5. Run the Playbook
 ansible-playbook -i inventory.ini playbook.yml
